@@ -1,0 +1,24 @@
+DROP VIEW IF EXISTS `view_env_master`;
+CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `view_env_master`  As select
+`env_master`.`ID` AS `ID`,
+`env_master`.`NAME` As `NAME`,
+`env_master`.`ENV_URL` As `ENV_URL`,
+`env_master`.`ENV_STATUS` As `ENV_STATUS`,
+
+`env_master`.`CREATED_MODIFIED_DATE` AS `CREATED_MODIFIED_DATE`
+
+
+ from `env_master`; 
+--------------------------------------------------------------------
+DROP VIEW IF EXISTS `view_project_master`;# MySQL returned an empty result set (i.e. zero rows).
+
+CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `view_project_master`  As select
+`project_master`.`ID` AS `ID`,
+`project_master`.`NAME` As `NAME`,
+`project_master`.`PROJECT_STATUS` As `PROJECT_STATUS`,
+
+`project_master`.`CREATED_MODIFIED_DATE` AS `CREATED_MODIFIED_DATE`
+
+
+ from `project_master`;
+---------------------------------------------------------------------------------------

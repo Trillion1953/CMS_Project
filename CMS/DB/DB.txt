@@ -1,0 +1,67 @@
+
+DROP VIEW IF EXISTS `view_tccat_master`;
+CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `view_tccat_master`  As select
+`tccat_master`.`ID` AS `ID`,
+`tccat_master`.`NAME` As `NAME`,
+`tccat_master`.`STATUS` As `STATUS`,
+`tccat_master`.`Descrip` As `Descrip`,
+`tccat_master`.`CREATED_MODIFIED_DATE` As `CREATED_MODIFIED_DATE`,
+`view_project_master`.`NAME` As `PROJECT_NAME`,
+`view_project_master`.`ID` As `PROJECT_ID`
+ from 
+`tccat_master` left join `view_project_master` on (`tccat_master`.`project_ID` = `view_project_master`.`ID` ) 
+; 
+-------------------------------
+
+
+DROP VIEW IF EXISTS `view_testdata_master`;
+CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `view_testdata_master`  As select
+`testdata_master`.`ID` AS `ID`,
+`testdata_master`.`NAME` As `NAME`,
+`testdata_master`.`CREATED_MODIFIED_DATE` As `CREATED_MODIFIED_DATE`,
+`testdata_master`.`STATUS` As `STATUS`,
+
+`view_tccat_master`.`NAME` As `tccat_NAME`,
+`view_env_master`.`NAME` As `env_NAME`
+ from 
+`testdata_master` left join `view_tccat_master` on (`testdata_master`.`TCCAT_ID` = `view_tccat_master`.`ID` ) 
+ left join `view_env_master` on (`testdata_master`.`ENV_ID` = `view_env_master`.`ID` ) 
+; 
+
+
+
+-----------------------------------------------------
+DROP VIEW IF EXISTS `view_tag_master`;
+CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `view_tag_master`  As select
+`tag_master`.`ID` AS `ID`,
+`tag_master`.`NAME` As `NAME`,
+`tag_master`.`Descript` As `Descript`,
+`tag_master`.`STATUS` As `STATUS`,
+
+`tag_master`.`CREATED_MODIFIED_DATE` AS `CREATED_MODIFIED_DATE`,
+
+
+ from 
+`tag_master`; 
+
+----------------------------------------------------
+DROP VIEW IF EXISTS `view_testcase_master`;
+CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `view_testcase_master`  As select
+`testcase_master`.`ID` AS `ID`,
+`testcase_master`.`NAME` As `NAME`,
+`testcase_master`.`descripti` As `descripti`,
+`testcase_master`.`CATEGORY_ID` As `CATEGORY_ID`,
+`testcase_master`.`TESTDATA_ID` As `TESTDATA_ID`,
+`testcase_master`.`TAG_ID` As `TAG_ID`,
+
+`testcase_master`.`CREATED_MODIFIED_DATE` As `CREATED_MODIFIED_DATE`,
+`testcase_master`.`STATUS` As `STATUS`,
+
+`view_tccat_master`.`NAME` As `tccat_NAME`,
+`view_testdata_master`.`NAME` As `testdata_NAME`,
+`view_tag_master`.`NAME` As `tag_NAME`
+ from 
+`testcase_master` left join `view_tccat_master` on (`testcase_master`.`CATEGORY_ID` = `view_tccat_master`.`ID` ) 
+ left join `view_testdata_master` on (`testcase_master`.`TESTDATA_ID` = `view_testdata_master`.`ID` ) 
+ left join `view_tag_master` on (`testcase_master`.`TAG_ID` = `view_tag_master`.`ID` ) 
+ ; 

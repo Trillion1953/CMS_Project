@@ -1,0 +1,167 @@
+
+
+
+-----------------------------------------------------------
+DROP TABLE IF EXISTS `role_master`;
+CREATE TABLE `role_master`  (
+`ID` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+`NAME` varchar(256) NOT NULL ,
+`STATUS` varchar(128) NOT NULL ,
+`CREATED_MODIFIED_DATE` datetime(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0)
+);
+
+---------------------------------------------------------------------------------------
+DROP VIEW IF EXISTS `view_role_master`;
+CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `view_role_master`  As select
+`role_master`.`ID` AS `ID`,
+`role_master`.`role_NAME` As `role_NAME`,
+`role_master`.`role_STATUS` As `role_STATUS`,
+
+`role_master`.`CREATED_MODIFIED_DATE` AS `CREATED_MODIFIED_DATE`
+
+
+ from 
+`role_master`;
+-------------------------------------------------------------------------------------------
+DROP TABLE IF EXISTS `user_master`;
+CREATE TABLE `role_master`  (
+`ID` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+`USER_NAME` varchar(256) NOT NULL ,
+`USER_STATUS` varchar(128) NOT NULL ,
+`CREATED_MODIFIED_DATE` datetime(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0),
+`USER_PSW` varchar(128) NOT NULL ,
+);
+------------------------
+DROP VIEW IF EXISTS `view_user_master`;
+CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `view_user_master`  As select
+`user_master`.`ID` AS `ID`,
+`user_master`.`USER_NAME` As `USER_NAME`,
+`user_master`.`USER_STATUS` As `USER_STATUS`,
+`user_master`.`USER_PSW` As `USER_PSW`,
+`user_master`.`CREATED_MODIFIED_DATE` AS `CREATED_MODIFIED_DATE`
+
+ from 
+`user_master`;
+---------------------------------------------------------------------------------------------
+DROP TABLE IF EXISTS `feature_master`;
+CREATE TABLE `feature_master`  (
+`ID` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+`feature_NAME` varchar(256) NOT NULL ,
+`feature_STATUS` varchar(128) NOT NULL ,
+`CREATED_MODIFIED_DATE` datetime(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0)
+);
+--------------------------------------------------------------------------------------
+DROP VIEW IF EXISTS `view_feature_master`;
+CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `view_feature_master`  As select
+`feature_master`.`ID` AS `ID`,
+`feature_master`.`feature_NAME` As `NAME`,
+`feature_master`.`feature_STATUS` As `STATUS`,
+
+`feature_master`.`CREATED_MODIFIED_DATE` AS `CREATED_MODIFIED_DATE`
+
+
+ from 
+`feature_master`;
+------------------------------------------------
+DROP VIEW IF EXISTS `view_material_master`;
+CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `view_material_master`  As select
+`material_master`.`ID` AS `ID`,
+`material_master`.`material_NAME` As `material_NAME`,
+`material_master`.`material_STATUS` As `material_STATUS`,
+
+`material_master`.`CREATED_MODIFIED_DATE` AS `CREATED_MODIFIED_DATE`
+
+
+ from 
+`material_master`;
+-------------------------------------------------------
+DROP VIEW IF EXISTS `view_status_master`;
+CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `view_status_master`  As select
+`status_master`.`ID` AS `ID`,
+`status_master`.`status_NAME` As `NAME`,
+`status_master`.`status_STATUS` As `STATUS`,
+
+`status_master`.`CREATED_MODIFIED_DATE` AS `CREATED_MODIFIED_DATE`
+
+
+ from 
+`status_master`;
+------------------------------------------------------------
+DROP VIEW IF EXISTS `view_user_master`;
+CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `view_user_master`  As select
+`user_master`.`ID` AS `ID`,
+`user_master`.`ROLE_ID` As `ROLE_ID`,
+`user_master`.`CATE_TYPE` As `CATE_TYPE`,
+`user_master`.`USER_STATUS` As `USER_STATUS`,
+`user_master`.`USER_NAME` As `USER_NAME`,
+`user_master`.`MOBILE_NO1` As `MOBILE_NO1`,
+`user_master`.`MOBILE_NO2` As `MOBILE_NO2`,
+`user_master`.`ADDRESS` As `ADDRESS`,
+`user_master`.`USER_PSW` AS `USER_PSW`,
+`user_master`.`CREATED_MODIFIED_DATE` AS `CREATED_MODIFIED_DATE`,
+`view_role_master`.`ID` AS `R_ID`,
+`view_role_master`.`role_NAME` AS `role_NAME`
+ from 
+`user_master` left join `view_role_master` on (`user_master`.`ROLE_ID` = `view_role_master`.`ID`); 
+
+-----------------------------------------------------------------------------
+DROP VIEW IF EXISTS `view_site_master`;
+CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `view_site_master`  As select
+`site_master`.`ID` AS `ID`,
+`site_master`.`site_NAME` As `site_NAME`,
+`site_master`.`STATUS` As `STATUS`,
+`site_master`.`CREATED_MODIFIED_DATE` AS `CREATED_MODIFIED_DATE`,
+
+`view_status_master`.`status_NAME` AS `status_NAME`,
+`view_user_master`.`USER_NAME` AS `USER_NAME`,
+
+`view_user_master`.`ADDRESS` AS `ADDRESS`,
+`view_user_master`.`MOBILE_NO1` AS `MOBILE_NO1`,
+`view_user_master`.`MOBILE_NO2` AS `MOBILE_NO2`
+
+
+
+ from 
+`site_master` left join `view_status_master` on (`site_master`.`status_ID` = `view_status_master`.`ID`)
+ left join `view_user_master` on (`site_master`.`site_USERID` = `view_user_master`.`ID` ); 
+--------------------------------------------------------------------------------------------------
+DROP VIEW IF EXISTS `view_payment_master`;
+CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `view_payment_master`  As select
+`payment_master`.`ID` AS `ID`,
+`payment_master`.`site_ID` AS `site_ID`,
+`payment_master`.`CREATED_DATE_TIME` As `CREATED_DATE_TIME`,
+`payment_master`.`REMARK` As `REMARK`,
+`payment_master`.`pay_MODE` As `pay_MODE`,
+`payment_master`.`RUPEES` As `RUPEES`,
+`payment_master`.`CREATED_MODIFIED_DATE` AS `CREATED_MODIFIED_DATE`,
+
+`view_site_master`.`site_NAME` AS `site_NAME`,
+`view_user_master`.`USER_NAME` AS `USER_NAME`,
+`view_user_master`.`CATE_TYPE` AS `CATE_TYPE`,
+`view_user_master`.`role_NAME` AS `role_NAME`,
+`view_user_master`.`ID` AS `client_id`
+ from 
+`payment_master` left join `view_site_master` on (`payment_master`.`site_ID` = `view_site_master`.`ID`)
+left join `view_user_master` on (`payment_master`.`client_ID` = `view_user_master`.`ID` ); 
+----------------------------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `site_feature_mapping`;
+CREATE TABLE `feature_master`  (
+`ID` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+`site_ID` varchar(256) NOT NULL ,
+`feat_ID` varchar(128) NOT NULL ,
+`CREATED_MODIFIED_DATE` datetime(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0)
+);
+----------------------------------------------------------------------
+DROP VIEW IF EXISTS `view_site_feature_mapping`;
+CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `view_site_feature_mapping`  As select
+`site_feature_mapping`.`ID` AS `ID`,
+`site_feature_mapping`.`site_ID` As `site_ID`,
+`site_feature_mapping`.`feat_ID` As `feat_ID`,
+
+`view_feature_master`.`NAME` As `NAME`
+
+ from 
+`site_feature_mapping` left join `view_feature_master` on (`site_feature_mapping`.`feat_ID` = `view_feature_master`.`ID`); 
+----------------------------------------------------------------------------------------------
+
